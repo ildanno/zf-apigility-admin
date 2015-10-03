@@ -241,6 +241,7 @@ class RpcServiceModel
     public function createFactoryController($serviceName)
     {
         $module     = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $version    = $this->moduleEntity->getLatestVersion();
 
         $srcPath = $this->modules->getRpcPath($module, $version, $serviceName);
@@ -258,6 +259,7 @@ class RpcServiceModel
 
         $view = new ViewModel([
                 'module'       => $module,
+                'namespace'    => $moduleNamespace,
                 'classname'    => $className,
                 'classfactory' => $classFactory,
                 'servicename'  => $serviceName,
@@ -279,7 +281,7 @@ class RpcServiceModel
             return false;
         }
 
-        return sprintf('%s\\V%s\\Rpc\\%s\\%s', $module, $version, $serviceName, $classFactory);
+        return sprintf('%s\\V%s\\Rpc\\%s\\%s', $moduleNamespace, $version, $serviceName, $classFactory);
     }
 
     /**
@@ -292,6 +294,7 @@ class RpcServiceModel
     {
         $module     = $this->module;
         $modulePath = $this->modules->getModulePath($module);
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $version    = $this->moduleEntity->getLatestVersion();
         $serviceName = str_replace("\\", "/", $serviceName);
 
@@ -303,7 +306,7 @@ class RpcServiceModel
 
         $className         = sprintf('%sController', $serviceName);
         $classPath         = sprintf('%s/%s.php', $srcPath, $className);
-        $controllerService = sprintf('%s\\V%s\\Rpc\\%s\\Controller', $module, $version, $serviceName);
+        $controllerService = sprintf('%s\\V%s\\Rpc\\%s\\Controller', $moduleNamespace, $version, $serviceName);
 
         if (file_exists($classPath)) {
             throw new Exception\RuntimeException(sprintf(
@@ -314,6 +317,7 @@ class RpcServiceModel
 
         $view = new ViewModel([
             'module'      => $module,
+            'namespace'    => $moduleNamespace,
             'classname'   => $className,
             'servicename' => $serviceName,
             'version'     => $version,
@@ -344,7 +348,7 @@ class RpcServiceModel
             ],
         ], true);
 
-        $fullClassName = sprintf('%s\\V%s\\Rpc\\%s\\%s', $module, $version, $serviceName, $className);
+        $fullClassName = sprintf('%s\\V%s\\Rpc\\%s\\%s', $moduleNamespace, $version, $serviceName, $className);
 
         return (object) [
             'class'   => $fullClassName,

@@ -485,7 +485,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $fullClassName = sprintf(
             '%s\\V%s\\Rest\\%s\\%s',
-            $module,
+            $moduleNamespace,
             $this->moduleEntity->getLatestVersion(),
             $serviceName,
             $className

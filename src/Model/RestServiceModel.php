@@ -391,7 +391,6 @@ class RestServiceModel implements EventManagerAwareInterface
     /**
      * Generate the controller service name from the module and service name
      *
-     * @param  string $module
      * @param  string $serviceName
      * @return string
      */
@@ -399,7 +398,7 @@ class RestServiceModel implements EventManagerAwareInterface
     {
         return sprintf(
             '%s\\V%s\\Rest\\%s\\Controller',
-            $this->module,
+            $this->moduleEntity->getNamespace(),
             $this->moduleEntity->getLatestVersion(),
             $serviceName
         );
@@ -408,6 +407,7 @@ class RestServiceModel implements EventManagerAwareInterface
     public function createFactoryClass($serviceName)
     {
         $module  = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $srcPath = $this->getSourcePath($serviceName);
 
         $classResource = sprintf('%sResource', $serviceName);
@@ -423,6 +423,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $view = new ViewModel([
                 'module'        => $module,
+                'namespace'     => $moduleNamespace,
                 'resource'      => $serviceName,
                 'classfactory'  => $className,
                 'classresource' => $classResource,
@@ -437,7 +438,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $fullClassName = sprintf(
             '%s\\V%s\\Rest\\%s\\%s',
-            $module,
+            $moduleNamespace,
             $this->moduleEntity->getLatestVersion(),
             $serviceName,
             $className
@@ -455,6 +456,7 @@ class RestServiceModel implements EventManagerAwareInterface
     public function createResourceClass($serviceName)
     {
         $module  = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $srcPath = $this->getSourcePath($serviceName);
 
         $className = sprintf('%sResource', $serviceName);
@@ -469,6 +471,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $view = new ViewModel([
             'module'    => $module,
+            'namespace' => $moduleNamespace,
             'resource'  => $serviceName,
             'classname' => $className,
             'version'   => $this->moduleEntity->getLatestVersion(),
@@ -511,6 +514,7 @@ class RestServiceModel implements EventManagerAwareInterface
     public function createEntityClass($serviceName, $template = 'entity', $details = null)
     {
         $module     = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $srcPath    = $this->getSourcePath($serviceName);
 
         $className = sprintf('%sEntity', $serviceName);
@@ -525,6 +529,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $view = new ViewModel([
             'module'    => $module,
+            'namespace' => $moduleNamespace,
             'resource'  => $serviceName,
             'classname' => $className,
             'version'   => $this->moduleEntity->getLatestVersion(),
@@ -539,7 +544,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $fullClassName = sprintf(
             '%s\\V%s\\Rest\\%s\\%s',
-            $module,
+            $moduleNamespace,
             $this->moduleEntity->getLatestVersion(),
             $serviceName,
             $className
@@ -556,6 +561,7 @@ class RestServiceModel implements EventManagerAwareInterface
     public function createCollectionClass($serviceName)
     {
         $module     = $this->module;
+        $moduleNamespace = $this->moduleEntity->getNamespace();
         $srcPath    = $this->getSourcePath($serviceName);
 
         $className = sprintf('%sCollection', $serviceName);
@@ -570,6 +576,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $view = new ViewModel([
             'module'    => $module,
+            'namespace' => $moduleNamespace,
             'resource'  => $serviceName,
             'classname' => $className,
             'version'   => $this->moduleEntity->getLatestVersion(),
@@ -583,7 +590,7 @@ class RestServiceModel implements EventManagerAwareInterface
 
         $fullClassName = sprintf(
             '%s\\V%s\\Rest\\%s\\%s',
-            $module,
+            $moduleNamespace,
             $this->moduleEntity->getLatestVersion(),
             $serviceName,
             $className

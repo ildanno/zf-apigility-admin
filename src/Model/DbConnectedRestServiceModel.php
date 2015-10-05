@@ -73,10 +73,11 @@ class DbConnectedRestServiceModel
     public function createService(DbConnectedRestServiceEntity $entity)
     {
         $restModel         = $this->restModel;
+        $moduleNamespace   = $this->restModel->moduleEntity->getNamespace();
         $resourceName      = StaticFilter::execute($entity->tableName, 'WordUnderscoreToCamelCase');
         $resourceClass     = sprintf(
             '%s\\V%s\\Rest\\%s\\%sResource',
-            $this->restModel->module,
+            $moduleNamespace,
             $this->restModel->moduleEntity->getLatestVersion(),
             $resourceName,
             $resourceName
